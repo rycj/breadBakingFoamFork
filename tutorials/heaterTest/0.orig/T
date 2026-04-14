@@ -1,0 +1,54 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 300;
+
+boundaryField
+{
+    // floor
+    // 	{
+    //     type breadOvenHeater;
+    //     refValue        uniform 300;
+    //     refGradient     uniform 0;
+    //     valueFraction   uniform 0;
+    //     value           uniform 300;
+    //     q_              100;
+    //     TStop_          450;
+    //     }
+    floor
+    	{
+        type externalWallHeatFluxTemperature;
+        mode power;
+        kappaMethod fluidThermo;
+        value uniform 300;
+        Q 100;
+        }
+
+    ceiling
+    	{
+        type zeroGradient;
+        }
+
+    fixedWalls
+    	{
+            type zeroGradient;
+        }
+}
+
+
+// ************************************************************************* //
