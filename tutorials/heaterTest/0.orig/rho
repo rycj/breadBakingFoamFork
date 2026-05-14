@@ -10,44 +10,33 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    object      T;
+    object      rho;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 1 0 0 0];
+dimensions      [1 -3 0 0 0 0 0];
 
-internalField   uniform 300;
+internalField   uniform 1.16;
 
 boundaryField
 {
     floor
-    	{
-        type breadOvenHeater;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        q_              100;
-        TStop_          450;
-        }
-    // floor
-    // 	{
-    //     type externalWallHeatFluxTemperature;
-    //     mode power;
-    //     kappaMethod fluidThermo;
-    //     value uniform 300;
-    //     Q 100;
-    //     }
+    {
+        type            calculated;
+        value           $internalField;
+    }
 
     ceiling
-    	{
-        type zeroGradient;
-        }
+    {
+        type            calculated;
+        value           $internalField;
+    }
 
     fixedWalls
-    	{
-            type zeroGradient;
-        }
+    {
+        type            calculated;
+        value           $internalField;
+    }
 }
 
 

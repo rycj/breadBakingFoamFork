@@ -166,7 +166,10 @@ int main(int argc, char *argv[])
             {
                 #include "rhoEqn.H"
             }
-
+            if (runTime.writeTime())
+            {
+                rho.write();
+            }
             #include "UEqn.H"
             #include "EEqn.H"
 

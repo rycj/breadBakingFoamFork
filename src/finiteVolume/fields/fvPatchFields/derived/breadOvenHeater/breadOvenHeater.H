@@ -70,6 +70,7 @@ class breadOvenHeaterFvPatchScalarField
 public:
     scalar q_;
     scalar TStop_;
+    scalar currentTime_;
     TypeName("breadOvenHeater");
 
     breadOvenHeaterFvPatchScalarField(const fvPatch&, const DimensionedField<scalar, volMesh>&);

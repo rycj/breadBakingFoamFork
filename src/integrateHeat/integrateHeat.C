@@ -129,33 +129,38 @@ int main(int argc, char *argv[])
             ),
             mesh
         );
-        // volScalarField rho
-        // (
-        //     IOobject
-        //         (
-        //         "rho",
-        //         runTime.timeName(),
-        //         mesh,
-        //         IOobject::MUST_READ,
-        //         IOobject::NO_WRITE
-        //     ),
-        //     mesh
-        // );
-
+        volScalarField rho
+        (
+            IOobject
+                (
+                "rho",
+                runTime.timeName(),
+                mesh,
+                IOobject::MUST_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh
+        );
         // Compute local partial sums
-        scalar localSum = gSum((temperature.internalField()) *(pressure.internalField()/8.314/temperature.internalField()*0.0281)* 1000 * mesh.V().field());
+        // scalar localSum = gSum((temperature.internalField()) *(pressure.internalField()/8.314/temperature.internalField()*0.0281)* 1000 * mesh.V().field());
         // scalar localSum = gSum((temperature.internalField()) *1.127* 1000 * mesh.V().field());
+        // volScalarField rho = mesh.lookupObject<volScalarField>("rho");
+        // scalar localSum = gSum((temperature.internalField()) *rho.internalField()* 1000 * mesh.V().field());
+        scalar localSum = gSum(temperature.internalField() *rho.internalField()* 1000 * mesh.V().field());
+        scalar mSum = gSum(rho.internalField()*mesh.V().field());
 
         scalar totalVol  = gSum(mesh.V().field());
 
         // Parallel reduction
         scalar globalSum = returnReduce(localSum, sumOp<scalar>());
+        scalar globalMSum=returnReduce(mSum, sumOp<scalar>());
         scalar globalVol  = returnReduce(totalVol, sumOp<scalar>());
 
         scalar avg = globalSum / globalVol;
         // scalar avgB = globalSumB / globalVol;
 
         Info << "Time = " << runTime.timeName() << "; Heat total = " << globalSum << endl;
+        Info << "Time = " << runTime.timeName() << "; Mass total = " << globalMSum << endl;
 
     }
     Info << "End" << endl;

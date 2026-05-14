@@ -8,10 +8,10 @@
 Build  : _e651d635-20240208 OPENFOAM=2312 patch=240220 version=2312
 Arch   : "LSB;label=32;scalar=64"
 Exec   : postProcess -case ../../ZZ_cases/00_breads/lol -func probeField -dict system/probeField
-Date   : Apr 14 2026
-Time   : 15:43:18
+Date   : May 14 2026
+Time   : 08:58:48
 Host   : Perry
-PID    : 17959
+PID    : 149552
 I/O    : uncollated
 Case   : /home/ryba34/MscThes/breadBakingFoamFork/ZZ_cases/00_breads/lol
 nProcs : 1
@@ -25,6 +25,303 @@ Create time
 Create mesh for time = 0
 
 Time = 0
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 10
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 20
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 30
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 40
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 50
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 60
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 70
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 80
+
+Reading fields:
+--> FOAM Warning : 
+    From bool Foam::IOobject::readHeader(Foam::dictionary&, Foam::Istream&)
+    in file db/IOobject/IOobjectReadHeader.C at line 118
+    Reading "constant/TInfTable" at line 1
+    First token could not be read or is not 'FoamFile'
+
+Check header is of the form:
+
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       IOobject;
+    location    "constant";
+    object      TInfTable;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    volScalarField: T
+
+Executing functionObjects
+
+Time = 90
 
 Reading fields:
 --> FOAM Warning : 

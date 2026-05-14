@@ -41,7 +41,8 @@ breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
     const DimensionedField<scalar, volMesh>& iF
 )
 :
-    mixedFvPatchScalarField(p, iF)
+    mixedFvPatchScalarField(p, iF),
+    currentTime_(-1)
 {}
 
 breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
@@ -53,7 +54,8 @@ breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
 :
     mixedFvPatchScalarField(p, iF, dict),
     q_(dict.get<scalar>("q_")),
-    TStop_(dict.get<scalar>("TStop_"))
+    TStop_(dict.get<scalar>("TStop_")),
+    currentTime_(-1)
 {}
 
 
@@ -64,6 +66,11 @@ void Foam::breadOvenHeaterFvPatchScalarField::updateCoeffs()
     {
         return;
     }
+    if (db().time().value() == currentTime_)
+    {
+        return;
+    }
+    currentTime_ = db().time().value();
 
             scalarField nut = this->db().lookupObject<volScalarField>("nut").boundaryField()[this->patch().index()];
             scalarField rho = this->db().lookupObject<volScalarField>("rho").boundaryField()[this->patch().index()];
@@ -101,7 +108,7 @@ void Foam::breadOvenHeaterFvPatchScalarField::updateCoeffs()
             vectorField SfBound = Sf.boundaryField()[this->patch().index()];
             scalarField SfBoundSize =mag(SfBound);
 
-            scalar probeT=T[1654];
+            scalar probeT = Foam::max(T.internalField()).value();
             scalar q;
 
             if(probeT<TStop_)
@@ -140,7 +147,8 @@ breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
     const fvPatchFieldMapper& mapper
 )
 :
-    mixedFvPatchScalarField(ptf, p, iF, mapper)
+    mixedFvPatchScalarField(ptf, p, iF, mapper),
+    currentTime_(ptf.currentTime_)
 {}
 }
 #include "addToRunTimeSelectionTable.H"
