@@ -72,8 +72,8 @@ void simData::trimSimData(){
 }
 
 
-std::array<float,5> simData::sumSq(){
-    std::array<float,5> sums;
+std::array<float,6> simData::sumSq(){
+    std::array<float,6> sums;
     for (int i=0;i<simData.size();i++){
         float sum=0;
         for (int j=0;j<simData[i].size();j++){

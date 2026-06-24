@@ -8,10 +8,10 @@
 Build  : _e651d635-20240208 OPENFOAM=2312 patch=240220 version=2312
 Arch   : "LSB;label=32;scalar=64"
 Exec   : postProcess -case ../../ZZ_cases/00_breads/lol -func probeField -dict system/probeField
-Date   : May 14 2026
-Time   : 08:58:48
+Date   : Jun 01 2026
+Time   : 13:47:01
 Host   : Perry
-PID    : 149552
+PID    : 96938
 I/O    : uncollated
 Case   : /home/ryba34/MscThes/breadBakingFoamFork/ZZ_cases/00_breads/lol
 nProcs : 1

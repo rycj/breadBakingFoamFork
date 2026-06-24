@@ -1,0 +1,84 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 440;
+
+boundaryField
+{
+    floor
+    	{
+        type breadOvenHeater;
+        refValue        uniform 300;
+        refGradient     uniform 0;
+        valueFraction   uniform 0;
+        value           uniform 300;
+        q_              1000;
+        TStop_          480;
+        TStart_         475;
+        }
+
+    ceiling
+    	{
+        type breadOvenSides;
+        refValue        uniform 300;
+        refGradient     uniform 0;
+        valueFraction   uniform 0;
+        value           uniform 300;
+        alpha_          0.2;
+        }
+
+    front
+    	{
+        type breadOvenSides;
+        refValue        uniform 300;
+        refGradient     uniform 0;
+        valueFraction   uniform 0;
+        value           uniform 300;
+        alpha_          0.6;
+        }
+    left
+    	{
+        type breadOvenSides;
+        refValue        uniform 300;
+        refGradient     uniform 0;
+        valueFraction   uniform 0;
+        value           uniform 300;
+        alpha_          0.2;
+        }
+    back
+    	{
+        type breadOvenSides;
+        refValue        uniform 300;
+        refGradient     uniform 0;
+        valueFraction   uniform 0;
+        value           uniform 300;
+        alpha_          0.2;
+        }
+    right
+    	{
+        type breadOvenSides;
+        refValue        uniform 300;
+        refGradient     uniform 0;
+        valueFraction   uniform 0;
+        value           uniform 300;
+        alpha_          0.2;
+        }
+}
+
+
+// ************************************************************************* //

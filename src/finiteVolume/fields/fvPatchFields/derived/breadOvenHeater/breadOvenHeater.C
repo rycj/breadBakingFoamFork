@@ -55,6 +55,8 @@ breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
     mixedFvPatchScalarField(p, iF, dict),
     q_(dict.get<scalar>("q_")),
     TStop_(dict.get<scalar>("TStop_")),
+    TStart_(dict.get<scalar>("TStart_")),
+    stopped(false),
     currentTime_(-1)
 {}
 
@@ -111,14 +113,25 @@ void Foam::breadOvenHeaterFvPatchScalarField::updateCoeffs()
             scalar probeT = Foam::max(T.internalField()).value();
             scalar q;
 
-            if(probeT<TStop_)
-                {
+            if(probeT<TStart_)
+            {
                 q=q_;
-                }
-
-            else{
+                stopped=false;
+            }
+            else if(probeT<TStop_&& !stopped)
+            {
+                q=q_;
+            }
+            else if(probeT>TStop_)
+            {
                 q=0;
-                }
+                stopped=true;
+            }
+            else
+            {
+                q=0;
+            }
+
  
             // this->refGrad()=(q/((mu+nut*rho)*cp/Pr));
             this->refGrad()=(q/(alphaEff*cp));
@@ -135,6 +148,7 @@ void Foam::breadOvenHeaterFvPatchScalarField::write(Ostream& os) const
 
     os.writeEntry("q_", q_);
     os.writeEntry("TStop_", TStop_);
+    os.writeEntry("TStart_", TStart_);
 
     writeEntry("value", os);
 }

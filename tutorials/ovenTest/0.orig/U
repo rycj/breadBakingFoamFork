@@ -9,58 +9,43 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    object      fvSolution;
+    class       volVectorField;
+    object      U;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-solvers
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
 {
-    "rho.*"
+    floor
     {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       0;
-        relTol          0;
+        type            noSlip;
     }
 
-    p_rgh
+    ceiling
     {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       1e-8;
-        relTol          0.01;
+        type            noSlip;
     }
 
-    p_rghFinal
+    front
     {
-        $p_rgh;
-        relTol          0;
+        type            noSlip;
     }
-
-    "(U|h|e|k|epsilon|R)"
+    back
     {
-        solver          PBiCGStab;
-        preconditioner  DILU;
-        tolerance       1e-6;
-        relTol          0.1;
+        type            noSlip;
     }
-
-    "(U|h|e|k|epsilon|R)Final"
+    left
     {
-        $U;
-        relTol          0;
+        type            noSlip;
     }
-}
-
-PIMPLE
-{
-    momentumPredictor yes;
-    nOuterCorrectors 2;
-    nCorrectors     2;
-    nNonOrthogonalCorrectors 0;
-    pRefCell        0;
-    pRefValue       1e5;
+    right
+    {
+        type            noSlip;
+    }
 }
 
 

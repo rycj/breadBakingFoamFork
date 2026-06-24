@@ -12,6 +12,8 @@ ZZ_myVizuals/*
 ZZ_pythonCtrlScripts
 ZZ_cases
 
+pyCtrlScripts/expData
+
 tutorials/*/all*
 
 *__pycache__*

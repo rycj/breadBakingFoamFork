@@ -70,6 +70,8 @@ class breadOvenHeaterFvPatchScalarField
 public:
     scalar q_;
     scalar TStop_;
+    scalar TStart_;
+    bool stopped;
     scalar currentTime_;
     TypeName("breadOvenHeater");
 

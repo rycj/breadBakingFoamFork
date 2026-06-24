@@ -10,58 +10,88 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSolution;
+    object      blockMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-solvers
-{
-    "rho.*"
-    {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       0;
-        relTol          0;
-    }
+scale   0.01;
 
-    p_rgh
-    {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       1e-8;
-        relTol          0.01;
-    }
+vertices
+(
+    (0 0 0)
+    (60 0 0)
+    (60 21 0)
+    (0 21 0)
+    (0 0 60)
+    (60 0 60)
+    (60 21 60)
+    (0 21 60)
+);
 
-    p_rghFinal
-    {
-        $p_rgh;
-        relTol          0;
-    }
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (6 2 6) simpleGrading (1 1 1)
+);
 
-    "(U|h|e|k|epsilon|R)"
-    {
-        solver          PBiCGStab;
-        preconditioner  DILU;
-        tolerance       1e-6;
-        relTol          0.1;
-    }
+edges
+(
+);
 
-    "(U|h|e|k|epsilon|R)Final"
+boundary
+(
+    floor
     {
-        $U;
-        relTol          0;
+        type wall;
+        faces
+        (
+            (1 5 4 0)
+        );
     }
-}
+    ceiling
+    {
+        type wall;
+        faces
+        (
+            (3 7 6 2)
+        );
+    }
+    front
+    {
+        type wall;
+        faces
+        (
+            (0 3 2 1)
+        );
+    }
+        left
+    {
+        type wall;
+        faces
+        (
+            (0 4 7 3)
+        );
+    }
+        right
+    {
+        type wall;
+        faces
+        (
+            (2 6 5 1)
+        );
+    }
+        back
+    {
+        type wall;
+        faces
+        (
+            (4 5 6 7)
+        );
+    }
+);
 
-PIMPLE
-{
-    momentumPredictor yes;
-    nOuterCorrectors 2;
-    nCorrectors     2;
-    nNonOrthogonalCorrectors 0;
-    pRefCell        0;
-    pRefValue       1e5;
-}
+mergePatchPairs
+(
+);
 
 
 // ************************************************************************* //
