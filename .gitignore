@@ -12,7 +12,7 @@ ZZ_myVizuals/*
 ZZ_pythonCtrlScripts
 ZZ_cases
 
-pyCtrlScripts/expData
+pyCtrlScripts/expData/*
 
 tutorials/*/all*
 
