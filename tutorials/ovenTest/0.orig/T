@@ -27,9 +27,9 @@ boundaryField
         refGradient     uniform 0;
         valueFraction   uniform 0;
         value           uniform 300;
-        q_              1000;
-        TStop_          480;
-        TStart_         475;
+        q_              2000;
+        TStop_          1000;
+        TStart_         450;
         }
 
     ceiling

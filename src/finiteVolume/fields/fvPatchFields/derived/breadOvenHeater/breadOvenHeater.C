@@ -110,7 +110,7 @@ void Foam::breadOvenHeaterFvPatchScalarField::updateCoeffs()
             vectorField SfBound = Sf.boundaryField()[this->patch().index()];
             scalarField SfBoundSize =mag(SfBound);
 
-            scalar probeT = Foam::max(T.internalField()).value();
+            scalar probeT = gMax(T.internalField());
             scalar q;
 
             if(probeT<TStart_)
@@ -162,6 +162,10 @@ breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(ptf, p, iF, mapper),
+    q_(ptf.q_),
+    TStop_(ptf.TStop_),
+    TStart_(ptf.TStart_),
+    stopped(ptf.stopped),
     currentTime_(ptf.currentTime_)
 {}
 }

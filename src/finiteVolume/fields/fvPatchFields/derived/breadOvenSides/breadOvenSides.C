@@ -106,13 +106,23 @@ void Foam::breadOvenSidesFvPatchScalarField::write(Ostream& os) const
 
 breadOvenSidesFvPatchScalarField::breadOvenSidesFvPatchScalarField
 (
+    const breadOvenSidesFvPatchScalarField& ptf
+)
+:
+    mixedFvPatchScalarField(ptf),
+    alpha_(ptf.alpha_)
+{}
+
+breadOvenSidesFvPatchScalarField::breadOvenSidesFvPatchScalarField
+(
     const breadOvenSidesFvPatchScalarField& ptf,
     const fvPatch& p,
     const DimensionedField<scalar, volMesh>& iF,
     const fvPatchFieldMapper& mapper
 )
 :
-    mixedFvPatchScalarField(ptf, p, iF, mapper)
+    mixedFvPatchScalarField(ptf, p, iF, mapper),
+    alpha_(ptf.alpha_)
 {}
 }
 #include "addToRunTimeSelectionTable.H"

@@ -10,7 +10,18 @@ import math
 import itertools
 import logging
 
-debugLvl: int = 2
+logging.basicConfig(level=logging.INFO, format="%(levelname)10s | %(message)s")
+WHITE = "\033[0m"
+BOLD = "\033[1m"
+CYAN = "\033[96m"
+PINK = "\033[95m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+
+
+def log(func, col, msg):
+    func(col + msg + WHITE)
 
 
 def loadDataOLD(filePath: str, tempInC: bool = False) -> np.ndarray:
@@ -44,12 +55,14 @@ class OpcuaData:
 
 def loadOpcuaLog(filePath: str, tempInC: bool = False) -> OpcuaData:
     """Reads data from an excel file with columns labeled 'Timestamp' for times, and 'TempX', where 'X' is a number for temperatures"""
-    logging.info(f"\nreading opcua log at {filePath}...")
+    log(logging.info, BOLD, f"reading opcua log at {filePath}...")
     try:
         sheet = pxl.open(filePath)["Sheet1"]
     except FileNotFoundError:
-        raise FileNotFoundError(
-            f"Could not find specified experimental data log, please check the adress.\nCurrent adress is {filePath}"
+        log(
+            logging.critical,
+            RED,
+            f"Could not find specified experimental data log, please check the adress.\nCurrent adress is {filePath}",
         )
     col: int = 1
     data = OpcuaData()
@@ -57,14 +70,17 @@ def loadOpcuaLog(filePath: str, tempInC: bool = False) -> OpcuaData:
     while sheet.cell(1, col)._value != None:
         row: int = 2
         header = sheet.cell(1, col)._value
-        logging.info(f"reading column {header}")
+        log(logging.info, CYAN, f"reading column {header}")
         if header == "Timestamp":
             startTime = sheet.cell(2, col)._value
             while sheet.cell(row, col)._value != None:
                 data.times.append((float(sheet.cell(row, col)._value) - startTime) * 60)
                 row += 1
-            logging.info("successfully read time column")
-            logging.debug(str(data.times), 3)
+            if len(data.times) > 0:
+                log(logging.info, GREEN, "successfully read time column")
+            else:
+                log(logging.critical, RED, "could not read time column!")
+            logging.debug(str(data.times))
         elif "Temp" in header:
             temps = []
             while sheet.cell(row, col)._value != None:
@@ -72,24 +88,30 @@ def loadOpcuaLog(filePath: str, tempInC: bool = False) -> OpcuaData:
                 row += 1
             num = str(re.fullmatch(r"Temp(\d+)", header).group(1))
             data.temps[num] = temps
-            logging.info(f"successfully read temp column number {num}")
-            logging.debug(str(data.temps[num]), 3)
+            if len(data.temps[num]) > 0:
+                log(logging.info, GREEN, f"successfully read temp column number {num}")
+                logging.debug(str(data.temps[num]))
+            else:
+                log(
+                    logging.critical, RED, f"temp column number {num} could not be read"
+                )
         else:
-            logging.warning(f"undefined column id '{header}', skipping")
+            log(logging.warning, YELLOW, f"undefined column id '{header}', skipping")
         col += 1
-    logging.info(f"finished reading opcua log at {filePath}\n")
+    log(logging.info, BOLD, f"finished reading opcua log at {filePath}")
     return data
 
 
 def probeSim(field: str, locs: list[tuple], case: OpenFOAMCase) -> None:
     """Probes the simulation at the specified locations with OpenFOAM probe utility. The locations should be in the format "(x y z)"."""
-    logging.info("\nStarting probe process...")
+    log(logging.info, BOLD, "Starting probe process...")
     locsString = "("
     for i in range(len(locs)):
         locsString += locs[i][1]
     locsString += ")"
-    logging.debug("Generated locsString")
-    logging.debug(locsString, 3)
+    log(logging.debug, WHITE, "Generated locsString")
+    logging.debug(locsString)
+    print(PINK)
     case.replace(
         [
             [
@@ -109,22 +131,30 @@ def probeSim(field: str, locs: list[tuple], case: OpenFOAMCase) -> None:
             ]
         ]
     )
+    print(WHITE)
     try:
         data = np.loadtxt(
-        case.dir + "/postProcessing/probeField/0/" + field,
-        skiprows=7,  # IMPORTANT!!! this should be probe count +1, temporarily set directly
+            case.dir + "/postProcessing/probeField/0/" + field,
+            skiprows=7,  # IMPORTANT!!! this should be probe count +1, temporarily set directly
         ).transpose()
     except FileNotFoundError:
-        raise FileNotFoundError(f"The probe failed to generate the appropriate file, searched in {case.dir + "/postProcessing/probeField/0/"}")
-    logging.info("probe succesfully generated data")
+        log(
+            logging.critical,
+            RED,
+            f"The probe failed to generate the appropriate file, searched in {case.dir}/postProcessing/probeField/0/",
+        )
+
+    log(logging.info, GREEN, "probe successfully generated data")
+    log(logging.info, CYAN, "compiling probe data")
     dataOut = OpcuaData()
     time, data = data[0], data[1:]
     for i in range(len(data)):
         series = locs[i][0]
         dataOut.temps[f"{series}"] = data[i]
     dataOut.times = time
-    logging.info("data compiled ending probe")
+    log(logging.info, GREEN, "data successfully compiled")
     logging.debug(dataOut)
+    log(logging.info, BOLD, "ending probe")
     return dataOut
 
 
@@ -166,36 +196,38 @@ def trimDataOLD(expData: np.ndarray, simData: np.ndarray) -> np.ndarray:
 
 
 def trimDataNEW(expData: dict, simData: dict):
-    # NEEDS FIXING!!! not working right, result skewed towards the beginning, reevaluate logic!
-    logging.info("trimming data to matching length")
+    log(logging.info, BOLD, "trimming data to matching length")
     key1 = list(expData.keys())[0]
     if len(simData[key1]) != len(expData.get(key1)):
         expLong: bool = len(simData.get(key1)) < len(expData.get(key1))
         if expLong:
-            logging.debug("expData is longer than simData")
+            log(logging.debug, WHITE, "expData is longer than simData")
             data = [simData, expData]
         else:
+            log(logging.debug, WHITE, "simData is longer than expData")
             data = [expData, simData]
-            logging.debug("simData is longer than expData")
         nShort = len(data[0].get(key1))
         nLong = len(data[1].get(key1))
-        logging.debug(f"{nLong} VS {nShort} entries")
+        log(logging.debug, WHITE, f"{nLong} VS {nShort} entries")
 
         for seriesN in data[0].keys():
-            logging.info(f"trimming data series {seriesN}")
+            log(logging.info, CYAN, f"trimming data series {seriesN}")
             tempData = np.zeros([len(data[0][str(seriesN)])])
-            tempData[0] = data[1][str(seriesN)][0]
+            longSeries = data[1][str(seriesN)]
+            tempData[0] = longSeries[0]
+            ratio = (nLong - 1) / nShort
 
             for datI in range(1, len(tempData) - 1):
                 tempData[datI] = linInterpol(
-                    data[1][str(seriesN)][int(np.floor(datI * (nLong / nShort)))],
-                    data[1][str(seriesN)][int(np.floor(datI * (nLong / nShort)) + 1)],
-                    (datI * (nLong / nShort)) - np.floor(datI * (nLong / nShort)),
+                    longSeries[int(np.floor(datI * ratio))],
+                    longSeries[int(np.floor(datI * ratio) + 1)],
+                    (datI * ratio) - np.floor(datI * ratio),
                 )
-            tempData[-1] = data[1][str(seriesN)][-1]
+            tempData[-1] = longSeries[-1]
+            log(logging.info, GREEN, f"series {seriesN} succesfully trimmed")
             logging.debug(f"result: {tempData}")
             data[1][str(seriesN)] = tempData
-        logging.info("finished trimming data")
+        log(logging.info, BOLD, "finished trimming data")
         if expLong:
             return [data[1], data[0]]
         else:
@@ -214,7 +246,7 @@ def plotResults(expData: np.ndarray, simData: np.ndarray):
 def plotDicts(
     time, simDict, expDict, label1="Simulation", label2="Experiment", figsize_per_plot=5
 ):
-    logging.info("plotting data")
+    log(logging.info, BOLD, "plotting data")
     if simDict.keys() != expDict.keys():
         raise ValueError("dict1 and dict2 must have identical keys.")
 
@@ -223,7 +255,7 @@ def plotDicts(
 
     ncols = math.ceil(math.sqrt(n))
     nrows = math.ceil(n / ncols)
-    
+
     logging.debug(f"with {ncols} columns and {nrows} rows")
 
     fig, axes = plt.subplots(
@@ -244,8 +276,9 @@ def plotDicts(
         ax.set_visible(False)
 
     plt.tight_layout()
-    logging.info(f"showing {ncols*nrows} plots")
+    log(logging.info, GREEN, f"showing {ncols*nrows} plots")
     plt.show()
+    log(logging.info, BOLD, "plotting finished")
 
 
 def transplantTime(case: OpenFOAMCase, realEndTime: float) -> None:
@@ -255,15 +288,19 @@ def transplantTime(case: OpenFOAMCase, realEndTime: float) -> None:
 
 
 def runSingleSim(baseCaseDir: str, targetDir: str, runSim: bool):
+    print(PINK)
     case = OpenFOAMCase()
     case.loadOFCaseFromBaseCase("../../tutorials/" + baseCaseDir)
     case.changeOFCaseDir("../../ZZ_cases" + targetDir)
-    expData: OpcuaData = loadOpcuaLog("../temp/opcua_log_20260211_115313.xlsx")
+    print(WHITE)
+    expData: OpcuaData = loadOpcuaLog("../temp/opcua_log_20260211_150638.xlsx")
     dur = expData.times[-1] - expData.times[0]
     if runSim:
+        print(PINK)
         case.copyBaseCase()
         transplantTime(case, dur)
-        case.runCommands(["./Allclean", "./Allrun"])
+        case.runCommands(["./Allclean", "./AllrunPar"])
+        print(WHITE)
     simData: OpcuaData = probeSim(
         "T",
         [
@@ -303,7 +340,7 @@ def runMultiSim(baseCaseDir: str, seriesName: str, parDict: dict):
         # runSingleSim
 
 
-runSingleSim("ovenTest", "/00_breads/lol", False)
+runSingleSim("ovenTest", "/00_breads/lolPar", True)
 # loadOpcuaLog("../expData/opcua_log_20260211_115313.xlsx")
 
 # exp = {"1": [1, 2, 3, 4, 5], "2": [10, 20, 30, 40, 50]}
