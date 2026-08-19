@@ -16,7 +16,7 @@ FoamFile
 
 ddtSchemes
 {
-    default         Euler;
+    default         steadyState;
 }
 
 gradSchemes
@@ -27,19 +27,22 @@ gradSchemes
 divSchemes
 {
     default         none;
-    div(phi,U)      Gauss upwind;
+    div(phi,U)      bounded Gauss upwind;
 
-    energy          Gauss upwind;
+    energy          bounded Gauss upwind;
     div(phi,h)      $energy;
     div(phi,e)      $energy;
-    div(phi,K)      Gauss linear;
-    div(phi,Ekp)    Gauss linear;
+    // div(phi,K)      Gauss linear;
+    // div(phi,Ekp)    Gauss linear;
 
-    turbulence      Gauss upwind;
+    div(phi,K)      bounded Gauss upwind;
+    div(phi,Ekp)    bounded Gauss upwind;
+
+    turbulence      bounded Gauss upwind;
     div(phi,k)      $turbulence;
     div(phi,epsilon) $turbulence;
     div(phi,R)      $turbulence;
-    div(R)          Gauss linear;
+    div(R)          bounded Gauss linear;
 
     div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
 }

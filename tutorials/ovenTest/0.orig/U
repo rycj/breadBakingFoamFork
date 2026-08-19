@@ -32,7 +32,8 @@ boundaryField
 
     front
     {
-        type            noSlip;
+        type            pressureInletOutletVelocity;
+        value           $internalField;
     }
     back
     {

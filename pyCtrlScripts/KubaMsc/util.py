@@ -23,7 +23,7 @@ RED = "\033[91m"
 def log(func, col, msg):
     func(col + msg + WHITE)
 
-
+logging.basicConfig(level=logging.INFO)
 def loadDataOLD(filePath: str, tempInC: bool = False) -> np.ndarray:
     """Reads data from filePath and returns it as a numpy array. The file is assumed to have one float per line."""
     a = np.loadtxt(filePath).transpose()
@@ -278,6 +278,8 @@ def plotDicts(
     plt.tight_layout()
     log(logging.info, GREEN, f"showing {ncols*nrows} plots")
     plt.show()
+    log(logging.info, GREEN, f"saving {ncols*nrows} plots")
+    plt.savefig("plots/test.png")
     log(logging.info, BOLD, "plotting finished")
 
 
@@ -299,8 +301,7 @@ def runSingleSim(baseCaseDir: str, targetDir: str, runSim: bool):
         print(PINK)
         case.copyBaseCase()
         transplantTime(case, dur)
-        case.runCommands(["./Allclean", "./AllrunPar"])
-        print(WHITE)
+        case.runCommands(["./Allclean", "sbatch --wait ./AllrunSlurm"])
     simData: OpcuaData = probeSim(
         "T",
         [

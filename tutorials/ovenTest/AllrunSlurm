@@ -1,0 +1,47 @@
+#!/bin/bash
+# Name of the job
+#SBATCH -J ovenHeaterTest
+# Partition to use
+#SBATCH -p short
+# Time limit. Often not needed as there are defaults,
+# but you might have to specify it to get the maximum allowed.
+# time: 24hours
+#SBATCH --time=3-00:00:00
+# Number of processes
+#SBATCH -n12
+# Do NOT use some nodes
+##SBATCH --exclude=kraken-l1
+# DO USE some nodes
+#SBATCH --nodelist=kraken-m6
+##SBATCH --nodes=1
+ 
+# load openfoam
+module load openfoam/2312
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+#!/bin/sh
+# cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
+#------------------------------------------------------------------------------
+
+cleanCase0
+
+#------------------------------------------------------------------------------
+
+#cd "${0%/*}" || exit                                # Run from this directory
+#. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+restore0Dir
+
+
+
+runApplication blockMesh 
+
+runApplication decomposePar 
+# cd /home/hlavaty/2025_rycBread/MscThes/breadBakingFoamFork/ZZ_cases/00_breads/lol
+srun -n 12 $(getApplication) -parallel > log.AllrunSlurm
+# srun buoyantPimpleFoam > log.AllrunSlurm
+
+runApplication reconstructPar
+
+#------------------------------------------------------------------------------

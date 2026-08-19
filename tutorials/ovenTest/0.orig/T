@@ -18,65 +18,96 @@ dimensions      [0 0 0 1 0 0 0];
 
 internalField   uniform 440;
 
+// boundaryField
+// {
+//     floor
+//     	{
+//         type breadOvenHeater;
+//         refValue        uniform 300;
+//         refGradient     uniform 0;
+//         valueFraction   uniform 0;
+//         value           uniform 300;
+//         q_              200;
+//         TStop_          1000000;
+//         TStart_         450;
+//         }
+
+//     ceiling
+//     	{
+//         type breadOvenSides;
+//         refValue        uniform 300;
+//         refGradient     uniform 0;
+//         valueFraction   uniform 0;
+//         value           uniform 300;
+//         alpha_          0.4;
+//         }
+
+//     front
+//     	{
+//         type breadOvenSides;
+//         refValue        uniform 300;
+//         refGradient     uniform 0;
+//         valueFraction   uniform 0;
+//         value           uniform 300;
+//         alpha_          0.8;
+//         }
+//     left
+//     	{
+//         type breadOvenSides;
+//         refValue        uniform 300;
+//         refGradient     uniform 0;
+//         valueFraction   uniform 0;
+//         value           uniform 300;
+//         alpha_          0.4;
+//         }
+//     back
+//     	{
+//         type breadOvenSides;
+//         refValue        uniform 300;
+//         refGradient     uniform 0;
+//         valueFraction   uniform 0;
+//         value           uniform 300;
+//         alpha_          0.4;
+//         }
+//     right
+//     	{
+//         type breadOvenSides;
+//         refValue        uniform 300;
+//         refGradient     uniform 0;
+//         valueFraction   uniform 0;
+//         value           uniform 300;
+//         alpha_          0.4;
+//         }
+// }
+
 boundaryField
 {
     floor
     	{
-        type breadOvenHeater;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        q_              2000;
-        TStop_          1000;
-        TStart_         450;
+        type fixedValue;
+        value uniform 440;
         }
 
     ceiling
     	{
-        type breadOvenSides;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        alpha_          0.2;
+        type zeroGradient;
         }
 
     front
     	{
-        type breadOvenSides;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        alpha_          0.6;
+        type zeroGradient;
         }
     left
     	{
-        type breadOvenSides;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        alpha_          0.2;
+        type zeroGradient;
         }
     back
     	{
-        type breadOvenSides;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        alpha_          0.2;
+        type zeroGradient;  
         }
     right
     	{
-        type breadOvenSides;
-        refValue        uniform 300;
-        refGradient     uniform 0;
-        valueFraction   uniform 0;
-        value           uniform 300;
-        alpha_          0.2;
+        type zeroGradient;
         }
 }
 
