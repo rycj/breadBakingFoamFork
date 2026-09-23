@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2312                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      epsilon;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -3 0 0 0 0];
+
+internalField   uniform 0.01;
+
+boundaryField
+{
+    floor
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+
+    ceiling
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+
+    front
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+    left
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+    back
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+    right
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+    // inlet
+    // {
+    //     type            turbulentMixingLengthDissipationRateInlet;
+    //     mixingLength    0.0168;
+    //     value           $internalField;
+    // }
+
+    // outlet
+    // {
+    //     type            inletOutlet;
+    //     inletValue      $internalField;
+    // }
+    inlet
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+
+    outlet
+    {
+        type            epsilonWallFunction;
+        value           uniform 0.01;
+    }
+}
+
+
+// ************************************************************************* //

@@ -88,7 +88,7 @@ void Foam::breadOvenSidesFvPatchScalarField::updateCoeffs()
             // scalarField f = 1.0 / (1.0 + (lambdaEffBound / (mag(this->patch().delta() + (DBound - DCells)))) / (alpha_));
             scalarField f = 1.0 / (1.0 + (lambdaEffBound * this->patch().deltaCoeffs()) / (alpha_));
             this->valueFraction() = f;
-            this->refValue() = 300;
+            // this->refValue() = 300;
         }
     }
     mixedFvPatchScalarField::updateCoeffs();

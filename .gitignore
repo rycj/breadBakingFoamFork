@@ -17,7 +17,7 @@ pyCtrlScripts/expData/*
 tutorials/*/all*
 
 *__pycache__*
-
+*Zone.Identifier
 applications/solvers/breadBakingFoamDough
 pyCtrlScripts/runBread*Test*
 # pyCtrlScripts/*Opt.py

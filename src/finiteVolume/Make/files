@@ -5,4 +5,4 @@ fields/fvPatchFields/derived/breadOmegaVMixed/breadOmegaVMixed.C
 fields/fvPatchFields/derived/breadDFloor/breadDFloor.C
 fields/fvPatchFields/derived/breadDSide/breadDSide.C
 
-LIB = $(FOAM_USER_LIBBIN)/libbreadMixedBCs
+LIB = $(FOAM_USER_LIBBIN)/libbreadMixedBCsKuba

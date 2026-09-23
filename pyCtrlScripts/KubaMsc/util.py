@@ -134,7 +134,7 @@ def probeSim(field: str, locs: list[tuple], case: OpenFOAMCase) -> None:
     print(WHITE)
     try:
         data = np.loadtxt(
-            case.dir + "/postProcessing/probeField/0/" + field,
+            case.dir + "/postProcessing/probeField/8000/" + field,
             skiprows=7,  # IMPORTANT!!! this should be probe count +1, temporarily set directly
         ).transpose()
     except FileNotFoundError:
@@ -245,7 +245,7 @@ def plotResults(expData: np.ndarray, simData: np.ndarray):
 
 def plotDicts(
     time, simDict, expDict, label1="Simulation", label2="Experiment", figsize_per_plot=5
-):
+    ):
     log(logging.info, BOLD, "plotting data")
     if simDict.keys() != expDict.keys():
         raise ValueError("dict1 and dict2 must have identical keys.")
@@ -318,6 +318,7 @@ def runSingleSim(baseCaseDir: str, targetDir: str, runSim: bool):
     expData = expData.unpack()[1]
     expData, simData = trimDataNEW(expData, simData)
     plotDicts(times, simData, expData)
+    return(calcSumSq(simData,expData))
 
 
 def getSetsFromDict(dictIn: dict) -> tuple[tuple]:
@@ -328,29 +329,69 @@ def getSetsFromDict(dictIn: dict) -> tuple[tuple]:
     sets = itertools.product(*vals)
     return tuple(sets)
 
+def calcSumSq(simData:OpcuaData,expData:OpcuaData):
+    sumSq=0
+    for sensor in simdata.temps.keys():
+        sumSq+=(simData.temps[sensor][-1]-expData.temps[sensor][-1])^2
+    return sumSq
 
-def runMultiSim(baseCaseDir: str, seriesName: str, parDict: dict):
-    parSets: tuple[tuple] = getSetsFromDict(parDict)
-    for simN, pars in enumerate(parSets):
-        parString = ""
-        for par in pars:
-            parString += str(par) + "_"
-        parString += "out"
-        target: str = "/00_breads/" + seriesName + "/" + parString
-        # change pars
-        # runSingleSim
+def optimize_run(run, bounds, fixed_args, output_dir, n_calls=100):
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    simulation_number = 0
+
+    def objective(x):
+        nonlocal simulation_number
+
+        simulation_number += 1
+
+        output_path = output_dir / f"simulation_{simulation_number:04d}"
+
+        # Add the changing output_path to the fixed arguments
+        args = fixed_args.copy()
+        args["output_path"] = output_path
+
+        result = run(*x, **args)
+
+        print(
+            f"Simulation {simulation_number}: "
+            f"parameters={x}, result={result}"
+        )
+
+        return result
+
+    result = gp_minimize(
+        objective,
+        dimensions=[
+            Real(low, high)
+            for low, high in bounds
+        ],
+        n_calls=n_calls,
+        n_initial_points=10,
+        random_state=42,
+    )
+
+    return result
 
 
-runSingleSim("ovenTest", "/00_breads/lolPar", True)
-# loadOpcuaLog("../expData/opcua_log_20260211_115313.xlsx")
+    
 
-# exp = {"1": [1, 2, 3, 4, 5], "2": [10, 20, 30, 40, 50]}
-# sim = {
-#     "1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-#     "2": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-# }
-# data = trimDataNEW(exp, sim)
-# print(data[0], "\n/////////////////////////////////////////\n", data[1])
+# result = optimize_run(
+#     runSingleSim,
+#     bounds=[
+#         (0.1, 1),
+#         (0.1, 1),
+#         (0.1, 1),
+#         (0.1, 1),
+#         (0.1, 1),
+#     ],
+#     fixed_args={
+#         "baseCaseDir": "addSpecificBCs-heater",
+#         "runSim": True,
+#     },
+#     output_dir="optimization_results",
+#     n_calls=100,
+# )
 
-# pars = {"L": [1, 2, 3], "T": [10, 20, 30]}
-# runMultiSim("a", "hhh", pars)
+runSingleSim("addSpecificBCs-heater_testing", "/00_breads/testRampUpPower", True)

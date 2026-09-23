@@ -59,6 +59,7 @@ SourceFiles
 #define breadOvenHeater_H
 
 #include "mixedFvPatchFields.H"
+#include "Function1.H"
 
 namespace Foam
 {
@@ -68,7 +69,8 @@ class breadOvenHeaterFvPatchScalarField
     public mixedFvPatchScalarField
 {
 public:
-    scalar q_;
+    // scalar q_;
+    autoPtr<Function1<scalar>> q_;
     scalar TStop_;
     scalar TStart_;
     bool stopped;

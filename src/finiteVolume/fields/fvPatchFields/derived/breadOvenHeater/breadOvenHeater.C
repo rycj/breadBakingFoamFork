@@ -53,7 +53,8 @@ breadOvenHeaterFvPatchScalarField::breadOvenHeaterFvPatchScalarField
 )
 :
     mixedFvPatchScalarField(p, iF, dict),
-    q_(dict.get<scalar>("q_")),
+    // q_(dict.get<scalar>("q_")),
+    q_(Function1<scalar>::New("q_", dict)),
     TStop_(dict.get<scalar>("TStop_")),
     TStart_(dict.get<scalar>("TStart_")),
     stopped(false),
@@ -78,7 +79,6 @@ void Foam::breadOvenHeaterFvPatchScalarField::updateCoeffs()
             scalarField rho = this->db().lookupObject<volScalarField>("rho").boundaryField()[this->patch().index()];
             scalarField alpha = this->db().lookupObject<volScalarField>("thermo:alpha").boundaryField()[this->patch().index()];
             scalarField alphat = this->db().lookupObject<volScalarField>("alphat").boundaryField()[this->patch().index()];
-            
             // scalarField alphaEff = alpha;
             
 
@@ -107,20 +107,21 @@ void Foam::breadOvenHeaterFvPatchScalarField::updateCoeffs()
 
             const fvMesh& mesh = this->patch().boundaryMesh().mesh();
             const surfaceVectorField& Sf = mesh.Sf();
+            const scalar t = this->db().time().timeOutputValue();
             vectorField SfBound = Sf.boundaryField()[this->patch().index()];
             scalarField SfBoundSize =mag(SfBound);
-
-            scalar probeT = gMax(T.internalField());
+            // scalar probeT = gMax(T.internalField());
+            scalar probeT=310;
             scalar q;
 
             if(probeT<TStart_)
             {
-                q=q_;
+                q=q_->value(t);
                 stopped=false;
             }
             else if(probeT<TStop_&& !stopped)
             {
-                q=q_;
+                q=q_->value(t);
             }
             else if(probeT>TStop_)
             {
